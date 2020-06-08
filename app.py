@@ -28,15 +28,56 @@ def create_buggy():
     msg=""
     try:
       qty_wheels = request.form['qty_wheels']
-      msg = f"qty_wheels={qty_wheels}" 
+      flag_color = request.form['flag_color']
+      flag_color_secondary = request.form['flag_color_secondary']
+      flag_pattern = request.form['flag_pattern']
+      power_type = request.form['power_type']
+      power_units = request.form['power_units']
+      aux_power_type = request.form['aux_power_type']
+      aux_power_units = request.form['aux_power_units']
+      hamster_booster = request.form['hamster_booster']
+      tyres = request.form['tyres']
+      qty_tyres = request.form['qty_tyres']
+      armour = request.form['armour']
+      attack = request.form['attack']
+      qty_attacks = request.form['qty_attacks']
+      fireproof = request.form['fireproof']
+      insulated = request.form['insulated']
+      antibiotic = request.form['antibiotic']
+      banging = request.form['banging']
+      algo = request.form['algo']
+
+      msg = f"qty_wheels = {qty_wheels}"
+      msg = f"flag_color = {flag_color}" 
+      msg = f"flag_color_secondary = {flag_color_secondary}"
+      msg = f"flag_pattern = {flag_pattern}" 
+      msg = f"power_type = {power_type}"
+      msg = f"power_units = {power_units}" 
+      msg = f"aux_power_type = {aux_power_type}"
+      msg = f"aux_power_units = {aux_power_units}" 
+      msg = f"hamster_booster = {hamster_booster}"
+      msg = f"tyres = {tyres}" 
+      msg = f"qty_tyres = {qty_tyres}"
+      msg = f"armour = {armour}" 
+      msg = f"attack = {attack}"
+      msg = f"qty_attacks = {qty_attacks}" 
+      msg = f"fireproof = {fireproof}"
+      msg = f"insulated = {insulated}" 
+      msg = f"antibiotic = {antibiotic}" 
+      msg = f"banging = {banging}"
+      msg = f"algo = {algo}" 
       with sql.connect(DATABASE_FILE) as con:
         cur = con.cursor()
-        cur.execute("UPDATE buggies set qty_wheels=? WHERE id=?", (qty_wheels, DEFAULT_BUGGY_ID))
+        cur.execute(
+          "UPDATE buggies set qty_wheels=?, flag_color=?, flag_color_secondary=?, flag_pattern=?, power_type=?, power_units=?, aux_power_type=?, aux_power_units=?, hamster_booster=?, tyres=?, qty_tyres=?, armour=?, attack=?, qty_attacks=?, fireproof=?, insulated=?, antibiotic=?, banging=?, algo=? WHERE id=?",
+          (qty_wheels, flag_color, flag_color_secondary, flag_pattern, power_type, power_units, aux_power_type, aux_power_units, hamster_booster, tyres, qty_tyres, armour, attack, qty_attacks, fireproof, insulated, antibiotic, banging, algo, DEFAULT_BUGGY_ID)
+        )
+
         con.commit()
         msg = "Record successfully saved"
     except:
       con.rollback()
-      msg = "error in update operation"
+      #msg = "error in update operation"
     finally:
       con.close()
       return render_template("updated.html", msg = msg)
@@ -50,7 +91,7 @@ def show_buggies():
   con.row_factory = sql.Row
   cur = con.cursor()
   cur.execute("SELECT * FROM buggies")
-  record = cur.fetchone(); 
+  record = cur.fetchone()
   return render_template("buggy.html", buggy = record)
 
 #------------------------------------------------------------
